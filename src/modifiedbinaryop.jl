@@ -104,7 +104,7 @@ end
 function LinearAlgebra.dot(op1::ModifiedBinaryOp, op2::ModifiedBinaryOp)
     dotmid = dot(op1.mid, op2.mid)
     dotgap = dot(op1.gap, op2.gap)
-    return (dotmid + dotgap) / 2.0
+    return (dotmid + dotgap) / 2
 end
 
 function LinearAlgebra.dot(op1::ModifiedBinaryOp, t2::AbstractTensorMap)
@@ -183,12 +183,12 @@ function LinearAlgebra.mul!(C::ModifiedBinaryOp, A::Number, B::AbstractTensorMap
     return mul!(C, A, ModifiedBinaryOp(B))
 end
 
-LinearAlgebra.tr(op::ModifiedBinaryOp) = (tr(op.mid) + tr(op.gap)) / 2.0
+LinearAlgebra.tr(op::ModifiedBinaryOp) = (tr(op.mid) + tr(op.gap)) / 2
 
 # The entropy of the density matrix is the average over the two different density matrices.
 function densitymatrix_entropy(rho::ModifiedBinaryOp)
     rho_mid, rho_gap = rho
     S_mid, S_gap = densitymatrix_entropy(rho_mid), densitymatrix_entropy(rho_gap)
-    S = (S_mid + S_gap) / 2.0
+    S = (S_mid + S_gap) / 2
     return S
 end

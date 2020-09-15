@@ -169,7 +169,8 @@ function ascending_fixedpoint(layer::ModifiedBinaryLayer)
     width = causal_cone_width(layer)
     Vtotal = ⊗(ntuple(n->inputspace(layer), Val(width))...)
     eye = id(storagetype(operatortype(layer)), Vtotal)
-    return ModifiedBinaryOp(sqrt(8.0/5.0) * eye, sqrt(2.0/5.0) * eye)
+    T = float(real(eltype(eye)))
+    return ModifiedBinaryOp(sqrt((8*one(T))/5) * eye, sqrt((2*one(T))/5) * eye)
 end
 
 function scalingoperator_initialguess(l::ModifiedBinaryLayer, irrep)
@@ -208,10 +209,10 @@ function precondition_tangent(layer::ModifiedBinaryLayer, tan::ModifiedBinaryLay
     utan, wltan, wrtan = tan
     @tensor rho_wl_mid[-1; -11] := rho.mid[-1 1; -11 1]
     @tensor rho_wl_gap[-1; -11] := rho.gap[1 -1; 1 -11]
-    rho_wl = (rho_wl_mid + rho_wl_gap) / 2.0
+    rho_wl = (rho_wl_mid + rho_wl_gap) / 2
     @tensor rho_wr_mid[-1; -11] := rho.mid[1 -1; 1 -11]
     @tensor rho_wr_gap[-1; -11] := rho.gap[-1 1; -11 1]
-    rho_wr = (rho_wr_mid + rho_wr_gap) / 2.0
+    rho_wr = (rho_wr_mid + rho_wr_gap) / 2
     @tensor(rho_u[-1 -2; -11 -12] :=
             wl'[12; 1 -11] * wr'[22; -12 2] *
             rho.mid[11 21; 12 22] *
@@ -321,8 +322,8 @@ function ascend(op::ModifiedBinaryOp{T}, layer::ModifiedBinaryLayer
     r = ascend_right(op, layer)
     m = ascend_mid(op, layer)
     b = ascend_between(op, layer)
-    scaled_op_mid = (l+r+m) / 2.0
-    scaled_op_gap = b / 2.0
+    scaled_op_mid = (l+r+m) / 2
+    scaled_op_gap = b / 2
     scaled_op = ModifiedBinaryOp(scaled_op_mid, scaled_op_gap)
     return scaled_op
 end
@@ -397,8 +398,8 @@ function ascend(op::ModifiedBinaryOp{T}, layer::ModifiedBinaryLayer
     r = ascend_right(op, layer)
     m = ascend_mid(op, layer)
     b = ascend_between(op, layer)
-    scaled_op_mid = (l+r+m) / 2.0
-    scaled_op_gap = b / 2.0
+    scaled_op_mid = (l+r+m) / 2
+    scaled_op_gap = b / 2
     scaled_op = ModifiedBinaryOp(scaled_op_mid, scaled_op_gap)
     return scaled_op
 end
@@ -482,8 +483,8 @@ function descend(rho::ModifiedBinaryOp, layer::ModifiedBinaryLayer)
     r = descend_right(rho, layer)
     m = descend_mid(rho, layer)
     b = descend_between(rho, layer)
-    scaled_rho_mid = (m + b) / 2.0
-    scaled_rho_gap = (l + r) / 2.0
+    scaled_rho_mid = (m + b) / 2
+    scaled_rho_gap = (l + r) / 2
     scaled_rho = ModifiedBinaryOp(scaled_rho_mid, scaled_rho_gap)
     return scaled_rho
 end
@@ -550,7 +551,7 @@ function environment_disentangler(h::ModifiedBinaryOp, layer::ModifiedBinaryLaye
             wl'[6; 1 7] * wr'[4; 8 2]
            )
 
-    env = (envl + envr + envm) / 4.0
+    env = (envl + envr + envm) / 4
     # Complex conjugate.
     env = permute(env', (3,4), (1,2))
     return env
@@ -612,7 +613,7 @@ function environment_isometry_left(h::ModifiedBinaryOp, layer, rho::ModifiedBina
             wr'[5; 1 3] * wl'[7; 6 -200]
            )
 
-    env = (envl + envr + envm + envb) / 4.0
+    env = (envl + envr + envm + envb) / 4
     # Complex conjugate.
     env = permute(env', (2,3), (1,))
     return env
@@ -676,7 +677,7 @@ function environment_isometry_right(h::ModifiedBinaryOp, layer, rho::ModifiedBin
             wr'[7; -100 6] * wl'[5; 3 1]
            )
 
-    env = (envl + envr + envm + envb) / 4.0
+    env = (envl + envr + envm + envb) / 4
     # Complex conjugate.
     env = permute(env', (2,3), (1,))
     return env

@@ -182,10 +182,10 @@ function precondition_tangent(layer::BinaryLayer, tan::BinaryLayer, rho)
     @tensor rho_wl[-1; -11] := rho[-1 1 2; -11 1 2]
     @tensor rho_wm[-1; -11] := rho[1 -1 2; 1 -11 2]
     @tensor rho_wr[-1; -11] := rho[1 2 -1; 1 2 -11]
-    rho_w = (rho_wl + rho_wm + rho_wr) / 3.0
+    rho_w = (rho_wl + rho_wm + rho_wr) / 3
     @tensor rho_twosite_l[-1 -2; -11 -12] := rho[-1 -2 1; -11 -12 1]
     @tensor rho_twosite_r[-1 -2; -11 -12] := rho[-1 -2 1; -11 -12 1]
-    rho_twosite = (rho_twosite_l + rho_twosite_r) / 2.0
+    rho_twosite = (rho_twosite_l + rho_twosite_r) / 2
     @tensor(rho_u[-1 -2; -11 -12] :=
             w'[12; 1 -11] * w'[22; -12 2] *
             rho_twosite[11 21; 12 22] *

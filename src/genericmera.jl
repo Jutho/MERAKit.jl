@@ -860,7 +860,7 @@ function minimize_expectation_ev(m::GenericMERA, h, pars; finalize! = OptimKit._
         counter += 1
         old_rhos = rhos
         old_expectation = expectation
-        gradnorm_sq = 0.0
+        gradnorm_sq = zero(real(eltype(m)))
 
         for i in 1:nt+1
             local env, l

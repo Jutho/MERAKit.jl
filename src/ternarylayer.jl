@@ -182,7 +182,7 @@ function precondition_tangent(layer::TernaryLayer, tan::TernaryLayer, rho)
     utan, wtan = tan
     @tensor rho_wl[-1; -11] := rho[-1 1; -11 1]
     @tensor rho_wr[-1; -11] := rho[1 -1; 1 -11]
-    rho_w = (rho_wl + rho_wr) / 2.0
+    rho_w = (rho_wl + rho_wr) / 2
     @tensor(rho_u[-1 -2; -11 -12] :=
             w'[12; 1 2 -11] * w'[22; -12 3 4] *
             rho[11 21; 12 22] *

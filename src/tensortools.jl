@@ -424,7 +424,7 @@ See also: [`precondition_tangent`](@ref)
 """
 function precondition_regconst(X::Tangent)
     delta = sqrt(eps(real(float(one(eltype(X.W))))))
-    delta = max(delta, norm(X) / 100.0)
+    delta = max(delta, norm(X) / 100)
     return delta
 end
 
